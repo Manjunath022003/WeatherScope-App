@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherScope – Indian & Global Weather Insights</title>
+    <link rel="stylesheet" href="mainstyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <nav id="mainNav" class="navbar">
+            <div class="nav-inner">
+                <ul class="tab-list" role="tablist">
+                    <li><button class="tab-btn active" data-section="dashboard"><i class="fas fa-compass"></i> <span>Dashboard</span></button></li>
+                    <li><button class="tab-btn" data-section="liveweather"><i class="fas fa-tint"></i><span>Live Weather</span></button></li>
+                    <li><button class="tab-btn" data-section="indianews"><i class="fas fa-bolt"></i><span>Hot Headlines</span></button></li>
+                    <li><button class="tab-btn" data-section="trends"><i class="fas fa-chart-area"></i><span>Climate Watch</span></button></li>
+                    <li><button class="tab-btn" data-section="settings"><i class="fas fa-cog"></i><span>Settings</span></button></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="main-area">
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="section-page active">
+                <header class="welcome-block">
+                    <h1><span class="brand-gradient">WeatherScope</span> Portal</h1>
+                    <hr class="divider">
+                    <p>
+                        Real-time weather & climate updates for every corner of India, powered by API.
+                        See trends, headlines, and next-level data at a glance.
+                    </p>
+                    <button class="cta-btn" onclick="showTab('liveweather')">Check Current Weather <i class="fas fa-arrow-down"></i></button>
+                </header>
+                <div class="feature-section">
+                    <h2>Core Utilities</h2>
+                    <div class="feature-row">
+                        <div class="core-feature blue-bg">
+                            <i class="fas fa-cloud-sun"></i>
+                            <h3>Instant Weather</h3>
+                            <p>Pull live weather reports for any Indian city or global hotspot—alerts, maps, humidity, wind, & more.</p>
+                        </div>
+                        <div class="core-feature purple-bg">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Critical News</h3>
+                            <p>Scroll breaking headlines on Indian weather disasters, monsoon alerts, and global emergencies.</p>
+                        </div>
+                        <div class="core-feature green-bg">
+                            <i class="fas fa-seedling"></i>
+                            <h3>Climate Data</h3>
+                            <p>Dive into long-term climate markers, temperature deltas, rainfall charts, and government reports.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                 <!-- New: Did You Know? Section -->
+                <div class="did-you-know-section">
+                    <h2>Did You Know?</h2>
+                    <p id="climateFact" class="climate-fact"></p>
+                </div>
+
+                <div class="stack-section">
+                    <h2>Stack</h2>
+                    <ul class="stack-list">
+                        <li title="Frontend"><i class="fas fa-code"></i> HTML + CSS + Vanilla JS</li>
+                        <li title="APIs"><i class="fas fa-plug"></i> Real Weather APIs (IMD/OWM)</li>
+                        <li title="Ops"><i class="fas fa-cogs"></i> Automated Deploys (GitHub Actions)</li>
+                    </ul>
+                </div>
+
+               
+            </section>
+
+            <!-- Weather Page -->
+            <section id="liveweather" class="section-page">
+                <div class="block-header">
+                    <h1>Find Weather Conditions</h1>
+                    <p>Type any location in India for precise & up-to-the-minute readings.</p>
+                </div>
+                <form class="weather-searchbox" onsubmit="event.preventDefault(); weatherQuery();">
+                    <input id="weatherInput" type="text" placeholder="Type city – e.g., Pune, Surat, Lucknow" autocomplete="off">
+                    <button type="button" id="searchWeatherBtn"><i class="fas fa-search"></i></button>
+                </form>
+                <div id="sampleCitiesRow">
+                    <button class="chip" type="button" onclick="searchWeatherCity('Bhopal')">Bhopal</button>
+                    <button class="chip" type="button" onclick="searchWeatherCity('Guwahati')">Guwahati</button>
+                    <button class="chip" type="button" onclick="searchWeatherCity('Ranchi')">Ranchi</button>
+                    <button class="chip" type="button" onclick="searchWeatherCity('Surat')">Surat</button>
+                </div>
+                <div id="weatherErrorBox" class="error-box hidden">City not found! Please search a recognized location.</div>
+                <div id="weatherPanel" class="weather-panel hidden"></div>
+            </section>
+
+            <!-- News Page -->
+            <section id="indianews" class="section-page">
+                <div class="block-header">
+                    <h1>Top Weather Headlines</h1>
+                    <p>Live reporting on Indian & global weather calamities you must know.</p>
+                    <button id="reloadNewsBtn" class="inline-btn" type="button"><i class="fas fa-sync-alt"></i> Update</button>
+                    <span id="updatedLabel" class="meta-timestamp"></span>
+                </div>
+                <div id="newsSpinner" class="spinnerbox hidden"><div class="lds-roller"></div> Loading latest stories...</div>
+                <div id="headlineSpot" class="headlines-area hidden"></div>
+            </section>
+
+            <!-- Trends Page -->
+            <section id="trends" class="section-page">
+                <div class="block-header">
+                    <h1>Climate Dashboard</h1>
+                    <p>National & international climate benchmarks at a glance.</p>
+                </div>
+                <section class="trendboard">
+                    <nav class="trend-tabs">
+                        <button class="trend-tab active" type="button" data-reg="india">India</button>
+                        <button class="trend-tab" type="button" data-reg="global">Global</button>
+                        <button class="trend-tab" type="button" data-reg="europe">Europe</button>
+                        <button class="trend-tab" type="button" data-reg="asia">Asia</button>
+                    </nav>
+                    <div id="trendMetrics" class="trend-metrics"></div>
+                </section>
+                <section class="reportboard">
+                    <h3>Latest Official Reports</h3>
+                    <ul class="reports-list">
+                        <li onclick="navLink('https://mausam.imd.gov.in/')"><i class="fas fa-external-link-alt"></i> IMD Annual Review</li>
+                        <li onclick="navLink('https://www.ipcc.ch/')"><i class="fas fa-external-link-alt"></i> IPCC Global 2023</li>
+                        <li onclick="navLink('https://www.ncei.noaa.gov/news/national-climate-report')"><i class="fas fa-external-link-alt"></i> NOAA: Current State</li>
+                        <li onclick="navLink('https://www.epa.gov/climate-indicators')"><i class="fas fa-external-link-alt"></i> EPA Trends USA</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- Settings Page -->
+            <section id="settings" class="section-page">
+                <div class="block-header">
+                    <h1>App Settings</h1>
+                    <p>Customize your WeatherScope experience.</p>
+                </div>
+                <form id="settingsForm" class="settings-form">
+                    <div class="settings-box">
+                        <label>Color Theme</label>
+                        <div class="theme-switcher">
+                            <button type="button" class="themeChoice" data-theme="dark"><i class="fas fa-moon"></i> Dark</button>
+                            <button type="button" class="themeChoice" data-theme="light"><i class="fas fa-sun"></i> Light</button>
+                        </div>
+                    </div>
+                    <div class="settings-box">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="showWeatherImageToggle">
+                            <span class="slider round"></span>
+                            <span class="toggle-label-text">Show Weather Image</span>
+                        </label>
+                        <p class="setting-description">Toggle to hide or show the weather condition image in Live Weather.</p>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+    <script src="corelogic.js"></script>
+</body>
+</html>

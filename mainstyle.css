@@ -1,0 +1,636 @@
+/* ------------------------------
+    Root Variables & Theme Switch
+------------------------------- */
+:root {
+    /* Colors & Gradients */
+    --bg-main: #191c29;
+    --bg-nav: #232438ee;
+    --bg-panel: #232438;
+    --panel-glass: rgba(255,255,255,0.06);
+
+    --brand-gradient: linear-gradient(90deg, #56d6fc, #56fac0, #b17be0);
+    --blue: #4adbf6;
+    --purple: #b075e9;
+    --green: #56fac0;
+
+    --text-main: #fbfbfd;
+    --text-dim: #a1a1b5;
+
+    /* Dynamic Background Variables */
+    --dynamic-bg-start: #191c29; /* Default dark */
+    --dynamic-bg-end: #0a0c14;   /* Default dark */
+
+    /* Fonts & Layout */
+    --brand-font: 'Montserrat', sans-serif;
+    --mono-font: 'Fira Mono', monospace;
+    --br: 1.1rem;
+    --shadow: 0 6px 30px 0 rgba(37,45,91,0.14);
+    --border: 1px solid #33384d;
+    --fast: 0.16s cubic-bezier(.52,.2,.41,1);
+}
+
+/* Light Theme Overrides */
+[data-theme="light"] {
+    --bg-main: #fdfcfa;
+    --bg-nav: #f6f6faee;
+    --bg-panel: #ffffff;
+    --text-main: #25355c;
+    --text-dim: #8496b7;
+    --blue: #2aa9d9;
+    --purple: #8b5cf6;
+    --green: #059669;
+    --border: 1px solid #ececec;
+
+    /* Dynamic Background Overrides for Light Theme */
+    --dynamic-bg-start: #fdfcfa;
+    --dynamic-bg-end: #e0e0e0;
+}
+
+/* Dynamic Background States */
+body[data-weather-state="clear"][data-time-of-day="day"] {
+    --dynamic-bg-start: #87CEEB; /* Sky Blue */
+    --dynamic-bg-end: #ADD8E6; /* Light Blue */
+}
+body[data-weather-state="clear"][data-time-of-day="night"] {
+    --dynamic-bg-start: #101525; /* Dark Blue Night */
+    --dynamic-bg-end: #050810;
+}
+body[data-weather-state="clouds"] {
+    --dynamic-bg-start: #7e4474; /*  */
+    --dynamic-bg-end: #7e4474; /*  */
+}
+body[data-weather-state="rain"] {
+    --dynamic-bg-start: #4682B4; /* Steel Blue */
+    --dynamic-bg-end: #5F9EA0; /* Cadet Blue */
+}
+body[data-weather-state="snow"] {
+    --dynamic-bg-start: #B0E0E6; /* Powder Blue */
+    --dynamic-bg-end: #E0FFFF; /* Light Cyan */
+}
+body[data-weather-state="fog"] {
+    --dynamic-bg-start: #D3D3D3; /* Light Gray */
+    --dynamic-bg-end: #A9A9A9; /* Dark Gray */
+}
+body[data-weather-state="thunderstorm"] {
+    --dynamic-bg-start: #404040; /* Dark Gray */
+    --dynamic-bg-end: #202020; /* Very Dark Gray */
+}
+
+
+
+/* --------------------
+    General Body & Layout
+--------------------- */
+body {
+    font-family: var(--brand-font);
+    background: linear-gradient(180deg, var(--dynamic-bg-start), var(--dynamic-bg-end)); /* Use dynamic background */
+    color: var(--text-main);
+    margin: 0;
+    min-height: 100vh;
+    transition: background 1s ease-in-out, color var(--fast); /* Smooth transition for background */
+    background-attachment: fixed; /* Keep background fixed when scrolling */
+}
+#app { min-height: 100vh; }
+.hidden { display: none !important; }
+
+/* -----------------
+    Navbar & Navigation
+------------------ */
+.navbar {
+    background: var(--bg-nav);
+    border-bottom: var(--border);
+    box-shadow: var(--shadow);
+    position: sticky; top:0; left:0; width:100%; z-index: 90;
+}
+.nav-inner { max-width: 1200px; margin:0 auto; }
+.tab-list { list-style:none; display: flex; padding:0; gap:0.75rem; }
+.tab-btn {
+    background:none;
+    border: none;
+    color: var(--text-dim);
+    font-weight: 700;
+    padding:1.1rem 2rem;
+    cursor:pointer;
+    font-size: 1rem;
+    display:flex;
+    gap:0.75rem;
+    border-bottom:3px solid transparent;
+    transition:all var(--fast);
+}
+.tab-btn.active, .tab-btn:focus {
+    color:var(--blue);
+    border-bottom:3px solid var(--blue);
+}
+.tab-btn span { margin-left:6px;}
+.tab-btn:hover { background:var(--panel-glass); color:var(--text-main);}
+.tab-btn i { font-size: 1.2em; }
+
+/* -----------------
+    Dashboard Features
+------------------ */
+.section-page {
+    display:none;
+    max-width:1100px;
+    margin:0 auto;
+    animation: fadein 0.6s;
+}
+.section-page.active { display:block; }
+
+.brand-gradient {
+    background:var(--brand-gradient);
+    background-clip: text;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-fill-color:transparent;
+}
+.welcome-block {
+    text-align: center;
+    margin:4.5rem 0 2.3rem 0;
+}
+.welcome-block h1 {
+    font-size:3em;
+    font-weight:900;
+}
+.divider {
+    border:none;
+    height:5px;
+    background:var(--brand-gradient);
+    width: 80px;
+    margin: 1.2em auto;
+}
+.welcome-block p {
+    color: var(--text-dim);
+    font-size:1.25em;
+    margin:1em 0;
+}
+.cta-btn {
+    background: var(--brand-gradient);
+    color:#222;
+    font-weight:700;
+    border:none;
+    border-radius:var(--br);
+    padding:1.1rem 2.1rem;
+    margin-top:1rem;
+    font-size:1.15em;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition:transform var(--fast);
+}
+.cta-btn:hover { transform:scale(1.04) translateY(-2px);}
+
+.feature-section { margin: 3.5rem 0 2.5rem; }
+.feature-row {
+    display:flex;
+    gap:1.5rem;
+    flex-wrap:wrap;
+    justify-content: center;
+}
+.core-feature {
+    padding:1.7rem 2rem;
+    border-radius:var(--br);
+    text-align:center;
+    min-width:270px;
+    max-width:350px;
+    color:#fff;
+    box-shadow:var(--shadow);
+    font-size:1.1em;
+    margin-bottom:1rem;
+    transition: box-shadow var(--fast);
+}
+.core-feature i { font-size:2.2em; margin-bottom:0.8em; }
+.blue-bg { background: linear-gradient(96deg,#3887fe,#3adefa);}
+.purple-bg { background: linear-gradient(91deg,#b17be0,#7e4ad0);}
+.green-bg { background: linear-gradient(99deg,#56fac0,#05a570);}
+.core-feature h3 { margin:.45em 0 .5em;}
+.core-feature p { color: #daf2fd; font-size:.98em;line-height:1.55; }
+
+.stack-section { margin-bottom: 3.5rem; } /* Added margin */
+.stack-section h2 {margin-bottom:1.2em;}
+.stack-list {
+    display:flex;
+    flex-wrap:wrap;
+    gap:1.25rem;
+    list-style:none;
+    justify-content:center;
+    padding:0;
+}
+.stack-list li {
+    background:var(--bg-panel);
+    padding:.9em 1.5em;
+    border-radius:999px;
+    color:var(--text-dim);
+    border:var(--border);
+    display:flex;
+    align-items:center;
+    gap:.5em;
+}
+.stack-list li i {color:var(--blue)}
+
+/* Did You Know Section */
+.did-you-know-section {
+    background: var(--bg-panel);
+    border-radius: var(--br);
+    padding: 2.2em;
+    margin: 3.5rem auto; /* Adjusted margin for better spacing */
+    max-width: 800px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+.did-you-know-section h2 {
+    margin-top: 0;
+    margin-bottom: 1em;
+    color: var(--blue);
+}
+.climate-fact {
+    font-size: 1.15em;
+    font-weight: 500;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+
+/* -----------------
+    Weather Search Panel
+------------------ */
+.block-header {
+    margin-top:2.4em;
+    text-align:center;
+    margin-bottom:2em;
+}
+.weather-searchbox {
+    display:flex;
+    gap:.9em;
+    justify-content:center;
+}
+.weather-searchbox input {
+    padding:1em 1em 1em 2.7em;
+    border-radius:1.5em;
+    border:var(--border);
+    font-size:1.08em;
+    min-width:230px;
+}
+.weather-searchbox button {
+    background:var(--brand-gradient);
+    color:#222;
+    border:none;
+    padding:.95em 1.2em;
+    border-radius:1.3em;
+    font-size:1em;
+    font-weight:800;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    transition:box-shadow var(--fast);
+}
+.weather-searchbox button:hover{
+    box-shadow:0 6px 25px 0 var(--green);
+}
+.weather-searchbox i{margin-right:0;}
+#weatherInput{
+    background:#141622;
+    color:var(--text-main);
+}
+#sampleCitiesRow{
+    display:flex;
+    gap:0.5em;
+    justify-content:center;
+    margin:1.3em 0;
+}
+.chip{
+    padding:.45em 1.2em;
+    border-radius:999px;
+    border:none;
+    color:var(--text-dim);
+    background:var(--bg-nav);
+    cursor:pointer;
+}
+.chip:hover{
+    color:var(--blue);
+    background:var(--panel-glass);
+}
+.error-box{
+    background:rgba(255,10,10,.11);
+    color:#ffbcd1;
+    padding:.85em 1.3em;
+    border-radius:1em;
+    font-weight:700;
+    text-align:center;
+    margin:1em 0;
+}
+.weather-panel {
+    background:var(--bg-panel);
+    border-radius:var(--br);
+    padding:2.7em 2.5em;
+    margin:2em auto 0;
+    max-width:470px;
+    box-shadow:var(--shadow);
+}
+.weather-panel .wp-loc{font-size:1.35em;font-weight:900;margin-bottom:.9em;}
+.weather-panel .wp-temp{font-size:3.4em;font-weight:800;}
+.weather-panel .wp-desc{font-size:1.2em;color:var(--text-dim);margin-bottom:.9em;}
+.weather-details-1{
+    display:flex;
+    gap:1.5rem;
+    justify-content:center;
+    margin:1.3em 0 0;
+}
+.weather-details-1 .wd-block{
+    background:var(--panel-glass);
+    padding:0.7em 0.9em;
+    border-radius:.9em;
+    text-align:center;
+    min-width:88px;
+}
+.weather-details-1 .wd-block i{color:var(--blue);}
+.weather-details-1 .wd-block span{font-size:.96em;display:block;}
+.animate-in {animation: fadein 0.8s;}
+@keyframes fadein{from{opacity:0;transform: translateY(25px);}to{opacity:1;transform: none;}}
+
+/* Additional Styles for weather image */
+.weather-image-container {
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+
+.weather-condition-image {
+    max-width: 150px;
+    height: auto;
+    border-radius: 1em;
+    box-shadow: var(--shadow);
+}
+
+
+/* -----------------
+    News/Headlines Page
+------------------ */
+.spinnerbox{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:1em;
+}
+.lds-roller{
+    display:inline-block;
+    position:relative;
+    width:30px;
+    height:30px;
+}
+.lds-roller:after{
+    content:"";
+    display:block;
+    width:24px;
+    height:24px;
+    border:3px solid var(--blue);
+    border-top:3px solid transparent;
+    border-radius:50%;
+    animation:spinit 1.2s linear infinite;
+}
+@keyframes spinit{100%{transform:rotate(360deg);}}
+.headlines-area{
+    margin:2em auto 0;
+    max-width:860px;
+    display:grid;
+    gap:2rem;
+}
+.news-tile {
+    background:var(--panel-glass);
+    border-radius:1.4em;
+    padding:1.7em;
+    display:flex;
+    gap:1.2rem;
+    position:relative;
+    box-shadow:var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.news-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px 0 rgba(37,45,91,0.2);
+}
+.news-tile .main-img {
+    width:180px;
+    height:140px;
+    border-radius:1em;
+    object-fit:cover;
+}
+.news-tile-content{flex:1;}
+.news-tile h2{
+    font-size:1.27em;
+    font-weight:900;
+    margin-bottom:.45em;
+}
+.news-tile .byline{color:var(--text-dim);font-size:.95em;}
+.news-tile .eventlevel{
+    position:absolute;top:1.1em;right:1.3em;
+    padding:0.2em 1em;
+    border-radius:1em;
+    font-weight:700;
+    font-size:.9em;
+    background:var(--brand-gradient);
+    color:#080a13;
+}
+.meta-timestamp{color:var(--text-dim);margin-left:2em;}
+.inline-btn{
+    background:var(--panel-glass);
+    color:var(--blue);
+    border:none;
+    padding:.6em 1.2em;
+    border-radius:999px;
+    cursor:pointer;
+}
+.inline-btn:hover{background:var(--blue);color:#fff;}
+
+/* -----------------
+    Climate Trends Tab
+------------------ */
+.trendboard{
+    margin:2.2em 0;
+    background: var(--bg-panel);
+    border-radius: var(--br);
+}
+.trend-tabs{
+    display:flex;
+    gap:1em;
+    justify-content:center;
+    margin-bottom:2em;
+}
+.trend-tab{
+    border:none;
+    padding:.9em 2.1em;
+    font-size:.99em;
+    color:var(--blue);
+    background:none;
+    border-radius:2em;
+    cursor:pointer;
+}
+.trend-tab.active{
+    background:var(--brand-gradient);
+    color:#19244a;
+    font-weight:900;
+}
+.trend-metrics{
+    display:flex;
+    gap:2em;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+.metric-box{
+    background:var(--panel-glass);
+    border-radius:1.1em;
+    padding:2em 1.4em;
+    text-align:center;
+    min-width:225px;
+}
+.metric-title{font-size:1.21em;font-weight:700;}
+.metric-val{
+    font-size:2.5em;
+    font-weight:900;
+    background:var(--brand-gradient);
+    background-clip:text;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.metric-context{
+    color:var(--text-dim);
+    font-size:.99em;
+    margin-top:.6em;
+}
+.reportboard {margin:3.1em 0;}
+.reports-list{
+    list-style:none;
+    display:grid;
+    gap:1em;
+    max-width:670px;
+    margin:auto;
+}
+.reports-list li{
+    padding:1.2em 2em;
+    margin-bottom: 1em;
+    background:var(--bg-panel);
+    border-radius:1.2em;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:1em;
+}
+.reports-list li i{color:var(--purple);}
+.reports-list li:hover{background:var(--brand-gradient);color:#161d2d;}
+
+/* ---------------
+    Settings Page
+---------------- */
+.settings-form{
+    max-width:450px;
+    margin:1em auto;
+    background:var(--panel-glass);
+    padding:2.2em;
+    border-radius:1em;
+}
+.settings-box{margin-bottom:1.4em;}
+.theme-switcher{
+    display:flex;
+    gap:1em;
+    margin-top:.6em;
+}
+.themeChoice{
+    background:var(--panel-glass);
+    padding:.95em 1.5em;
+    border-radius:1.2em;
+    border:none;
+    font-weight:700;
+    color:var(--text-dim);
+    cursor:pointer;
+    transition: background var(--fast);
+}
+.themeChoice.active, .themeChoice:focus{
+    background:var(--brand-gradient);
+    color:#1d212f;
+}
+.themeChoice i{margin-right:.6em;}
+
+/* Toggle Switch Styles */
+.toggle-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: relative;
+    width: 60px;
+    height: 34px;
+    background-color: var(--text-dim);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+    flex-shrink: 0;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--bg-main);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-image: var(--brand-gradient);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--brand-gradient);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.toggle-label-text {
+    color: var(--text-main);
+    font-size: 1em;
+    line-height: 1.2;
+}
+
+.setting-description {
+    color: var(--text-dim);
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    line-height: 1.4;
+    padding-left: 75px;
+}
+
+
+/* -----------------
+    Responsive Layout
+------------------ */
+@media (max-width: 800px){
+    .feature-row,.trend-metrics{flex-direction:column;gap:1.2em;}
+    .reports-list{padding: 0;}
+    .core-feature{max-width:100%;}
+}
+@media (max-width: 500px){
+    .navbar{font-size: .93em}
+    .feature-row,.trend-metrics{gap:.7em;}
+    .cta-btn{font-size:.99em}
+}
