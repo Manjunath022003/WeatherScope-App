@@ -1,4 +1,5 @@
-# WeatherScope-App
+WeatherScope-App
+
 WeatherScope – Indian & Global Weather Insights
 A dynamic weather application providing real-time conditions, news, and climate trends.
 
@@ -48,9 +49,9 @@ To run this project locally, follow these simple steps:
 
 Clone the repository (or download the ZIP file) to your local machine:
 
-git clone https://github.com/YourUsername/WeatherScope-App.git
+git clone https://github.com/manjunath022003/WeatherScope-App.git
 
-(Replace YourUsername/WeatherScope-App.git with your actual repository URL)
+(Replace manjunath022003/WeatherScope-App.git with your actual repository URL)
 
 Navigate to the project directory:
 
